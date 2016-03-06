@@ -1,0 +1,17 @@
+<p>
+  This is the posts page for the user. 
+ 
+</p>
+
+<p>
+    <a href="/newpost">Add post</a>
+</p>
+
+<br/> <br/>
+
+{{#each posts}}    
+    <div><b>{{ title }}</b></div>
+    <div>{{content}}</div>
+    <a href="/viewpost">View</a> | <a href="">Edit</a> | <a href="">Delete</a>
+    <br/><br/>
+{{/each}}
