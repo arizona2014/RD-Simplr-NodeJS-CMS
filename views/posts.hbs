@@ -12,6 +12,6 @@
 {{#each posts}}    
     <div><b>{{ title }}</b></div>
     <div>{{{content}}}</div>
-    <a href="/viewpost">View</a> | <a href="">Edit</a> | <a href="">Delete</a>
+    <a href="/viewpost/{{ id }}">View</a> | <a href="/editpost/{{ id }}">Edit</a> | <a href="/deletepost/{{ id }}">Delete</a>
     <br/><br/>
 {{/each}}

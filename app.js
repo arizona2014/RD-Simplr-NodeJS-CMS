@@ -44,27 +44,74 @@ app.get('/newpost', function(req, res) {
 });
 
 app.post('/newpost', function(req, res) {
+
+	var authCookie = req.cookies.authentication;
+	var id;
+	
+	if( !posts[authCookie] ){		
+		id = 1;
+	} else {
+		var max = 0;
+		for(i=0; i<posts[authCookie].length; i++){
+			if(posts[authCookie][i].id > max)
+			{
+				max = posts[authCookie][i].id;
+			}
+		}		
+		id = max + 1;
+	}
+
     var thePost = { 
+		id: id,
         title: req.body.title, 
         content: req.body.content 
         };
-    var authCookie = req.cookies.authentication;
+    
     
     if (!posts[authCookie])
     {
         posts[authCookie] = [];
     }
     
-    posts[authCookie].push(thePost);
-    
+    posts[authCookie].push(thePost);		     
     res.cookie("authentication", authCookie);
     res.redirect('/posts');
+	
 });
 
-app.get('/viewpost', function(req, res) {    
+app.get('/viewpost/:id', function(req, res) {    
     var authCookie = req.cookies.authentication;
+	var id = req.params.id;
+	
+	var indx = -1;
+	for(i=0; i<posts[authCookie].length; i++){
+		if(posts[authCookie][i].id == id)
+		{
+			indx = i;
+		}
+	}	
+	
+    res.cookie("authentication", authCookie);	
+    res.render('viewpost.hbs', { username: authCookie, content: posts[authCookie][indx].content });
+});
+
+app.get('/deletepost/:id', function(req, res) {    
+    var authCookie = req.cookies.authentication;
+	var id = req.params.id;	
     res.cookie("authentication", authCookie);
-    res.render('viewpost.hbs', { username: authCookie, content: posts[authCookie][0].content });
+	var indx = -1;
+	for(i=0; i<posts[authCookie].length; i++){
+		if(posts[authCookie][i].id == id)
+		{
+			indx = i;
+		}
+	}
+
+	if(indx > -1)
+	{
+		posts[authCookie].splice(indx,1);
+	}
+    res.redirect('/posts');
 });
 
 app.get('/signup', function(req, res) {     
