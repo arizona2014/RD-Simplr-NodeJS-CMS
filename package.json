@@ -16,6 +16,8 @@
     "express-session": "^1.13.0",
     "fs": "0.0.2",
     "handlebars": "^4.0.5",
+    "jsonfile": "^2.2.3",
+    "path": "^0.12.7",
     "uuid": "^2.0.1"
   }
 }
