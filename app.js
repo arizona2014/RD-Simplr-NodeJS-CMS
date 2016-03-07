@@ -82,7 +82,6 @@ app.post('/newpost', function(req, res) {
 app.get('/viewpost/:id', function(req, res) {    
     var authCookie = req.cookies.authentication;
 	var id = req.params.id;
-	
 	var indx = -1;
 	for(i=0; i<posts[authCookie].length; i++){
 		if(posts[authCookie][i].id == id)
@@ -90,9 +89,13 @@ app.get('/viewpost/:id', function(req, res) {
 			indx = i;
 		}
 	}	
-	
+
     res.cookie("authentication", authCookie);	
-    res.render('viewpost.hbs', { username: authCookie, content: posts[authCookie][indx].content });
+	if( indx !== -1 )
+		res.render('viewpost.hbs', { username: authCookie, content: posts[authCookie][indx].content });
+	else
+		 res.redirect('/posts');
+	
 });
 
 app.get('/deletepost/:id', function(req, res) {    
