@@ -1,0 +1,16 @@
+<html>
+    <head>
+        <title>simplr</title>    
+        <link rel="stylesheet" type="text/css" href="style.css">    
+    </head>
+    <body>
+        {{#if username}}
+            <p>
+                Welcome, <b>{{{ username }}}</b> <a href="/logout">Log out</a>   
+            </p>
+            <hr />
+        {{/if}}
+       
+        {{{body}}}
+    </body>
+</html>
