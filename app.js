@@ -84,17 +84,16 @@ app.get('/viewpost/:id', function(req, res) {
 	var id = req.params.id;
 
 	var indx = -1;
-	for(i=0; i<posts[authCookie].length; i++){
-		if(posts[authCookie][i].id == id)
+	for(i=0; i<posts.length; i++){
+		if(posts[i].id == id)
 		{
 			indx = i;
 		}
 	}	
 
-
     res.cookie("authentication", authCookie);	
 	if( indx !== -1 )
-		res.render('viewpost.hbs', { username: authCookie, content: posts[authCookie][indx].content });
+		res.render('viewpost.hbs', { username: authCookie, content: posts[indx].content });
 	else
 		 res.redirect('/posts');
 
