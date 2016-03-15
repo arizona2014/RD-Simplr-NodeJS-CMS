@@ -66,15 +66,20 @@ app.post('/newpost', function(req, res) {
 		id = max + 1;
 	}		
 
-
     var thePost = { 
-		id: id,
-        title: req.body.title, 
-        content: req.body.content 
+			id: id,
+			title: req.body.title, 
+			content: req.body.content 
         };    
     
+    var theMeta = { 
+			id: id,
+			meta: req.body.meta
+        };    	
+	
     posts.push(thePost);
-	saveState(posts, authCookie);
+	meta.push(theMeta);
+	saveState(authCookie);
 	
     res.cookie("authentication", authCookie);
     res.redirect('/posts');
@@ -161,9 +166,8 @@ function loadStateMeta(authCookie) {
 	
 	var file = './' + authCookie + '.json'; 
 	if (fs.existsSync(file)) {
-		var obj = jsonfile.readFileSync(file);
-		console.log(obj[1]["metadata"]);
-		return obj;
+		var obj = jsonfile.readFileSync(file);		
+		return obj[1]["metadata"];	
 	} else {
 		var obj = [];		
 		jsonfile.writeFileSync(file, obj);	
@@ -173,10 +177,12 @@ function loadStateMeta(authCookie) {
 }
 
 
-function saveState(obj, authCookie) {
+function saveState(authCookie) {
     //fs.writeFile("state.json", JSON.stringify(state));	
     
-	var obj = posts;
+	var obj = [];
+	obj.push({"posts":posts}) ;
+	obj.push({"metadata":meta});
 	var file = './' + authCookie + '.json';	 
 	jsonfile.writeFileSync(file, obj);
 	

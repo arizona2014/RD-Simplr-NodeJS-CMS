@@ -3,21 +3,15 @@
         <tr>
             <td>Title</td>
             <td>
-                <input type="text" name="title" />
+                <input type="text" name="title" value="{{title}}"}/>
             </td>           
         </tr>
         <tr>
             <td>Content</td>
             <td>
-                <textarea name="content" id="content" cols="30" rows="10"></textarea>
+                <textarea name="content" id="content" cols="30" rows="10">{{content}}</textarea>
             </td>             
         </tr> 
-        <tr>
-            <td>Meta</td>
-            <td>
-                <textarea name="meta" id="meta" cols="90" rows="10"></textarea>
-            </td>             
-        </tr> 		
     </table>     
     <p>
         <input type="submit" value="Add" />   
@@ -26,7 +20,7 @@
 <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
 <script>
 	tinymce.init({
-	  selector: '#content',
+	  selector: 'textarea',
 	  height: 500,
 	  theme: 'modern',
 	  plugins: [
