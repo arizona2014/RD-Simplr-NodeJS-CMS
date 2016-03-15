@@ -17,6 +17,7 @@ app.set('view engine', 'hbs');
 app.use(cookieParser());
 
 var posts = [];
+var meta = [];
 
 app.get('/', function(req, res) {
     res.render('index.hbs');
@@ -29,7 +30,8 @@ app.get('/logon', function(req, res) {
 app.get('/posts', function(req, res) {	
     var authCookie = req.cookies.authentication;     
     if(authCookie && authCookie != "") {        
-		posts = loadState(authCookie);
+		posts = loadStatePosts(authCookie);
+		meta = loadStateMeta(authCookie);
 		var userPosts = [];
 		if(posts !== [])
 			userPosts = posts;		
@@ -140,13 +142,13 @@ app.post('/logon', function(req, res) {
     } 
 });
 
-
-function loadState(authCookie) {
+function loadStatePosts(authCookie) {
     //state = fs.readFile("state.json");
 	
 	var file = './' + authCookie + '.json'; 
-	if (fs.existsSync(file)) {
-		return jsonfile.readFileSync(file);
+	if (fs.existsSync(file)) {		
+		var obj = jsonfile.readFileSync(file);						
+		return obj[0]["posts"];		
 	} else {
 		var obj = [];		
 		jsonfile.writeFileSync(file, obj);	
@@ -154,6 +156,22 @@ function loadState(authCookie) {
 	}
 	
 }
+
+function loadStateMeta(authCookie) {    
+	
+	var file = './' + authCookie + '.json'; 
+	if (fs.existsSync(file)) {
+		var obj = jsonfile.readFileSync(file);
+		console.log(obj[1]["metadata"]);
+		return obj;
+	} else {
+		var obj = [];		
+		jsonfile.writeFileSync(file, obj);	
+		return obj;
+	}
+	
+}
+
 
 function saveState(obj, authCookie) {
     //fs.writeFile("state.json", JSON.stringify(state));	
