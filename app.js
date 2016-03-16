@@ -13,7 +13,6 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 app.use(express.static('content'));
 app.engine('hbs', expressHbs({ extname:'hbs', defaultLayout:'main.hbs' }));
 app.set('view engine', 'hbs');
-
 app.use(cookieParser());
 
 var posts = [];
@@ -49,7 +48,6 @@ app.get('/newpost', function(req, res) {
 });
 
 app.post('/newpost', function(req, res) {
-
 	var authCookie = req.cookies.authentication;
 	var id;
 
@@ -82,8 +80,7 @@ app.post('/newpost', function(req, res) {
 	saveState(authCookie);
 	
     res.cookie("authentication", authCookie);
-    res.redirect('/posts');
-	
+    res.redirect('/posts');	
 });
 
 app.get('/viewpost/:id', function(req, res) {    
@@ -103,11 +100,33 @@ app.get('/viewpost/:id', function(req, res) {
 		res.render('viewpost.hbs', { username: authCookie, content: posts[indx].content });
 	else
 		 res.redirect('/posts');
+});
 
+app.get('/editpost/:id', function(req, res) {    
+    var authCookie = req.cookies.authentication;
+	var id = req.params.id;
+
+	var indx = -1;
+	for(i=0; i<posts.length; i++){
+		if(posts[i].id == id)
+		{
+			console.log("id = " + id + " postul are tot " + posts[i].id);
+			indx = i;
+		}
+		else 
+		{
+			console.log("id = " + id + " postul are " + posts[i].id);
+		}
+	}
+	
+    res.cookie("authentication", authCookie);	
+	if( indx !== -1 )
+		res.render('editpost.hbs', { username: authCookie, title:posts[indx].title, content: posts[indx].content, meta: meta[indx].meta });
+	else
+		 res.redirect('/posts');
 });
 
 app.get('/deletepost/:id', function(req, res) {    
-
     var authCookie = req.cookies.authentication;
 	var id = req.params.id;	
     res.cookie("authentication", authCookie);
@@ -125,8 +144,7 @@ app.get('/deletepost/:id', function(req, res) {
 	}
 	
 	saveState(posts, authCookie);		
-    res.redirect('/posts');
-	
+    res.redirect('/posts');	
 });
 
 app.get('/signup', function(req, res) {     
@@ -148,8 +166,7 @@ app.post('/logon', function(req, res) {
 });
 
 function loadStatePosts(authCookie) {
-    //state = fs.readFile("state.json");
-	
+    //state = fs.readFile("state.json");	
 	var file = './' + authCookie + '.json'; 
 	if (fs.existsSync(file)) {		
 		var obj = jsonfile.readFileSync(file);						
@@ -158,12 +175,10 @@ function loadStatePosts(authCookie) {
 		var obj = [];		
 		jsonfile.writeFileSync(file, obj);	
 		return obj;
-	}
-	
+	}	
 }
 
-function loadStateMeta(authCookie) {    
-	
+function loadStateMeta(authCookie) {    	
 	var file = './' + authCookie + '.json'; 
 	if (fs.existsSync(file)) {
 		var obj = jsonfile.readFileSync(file);		
@@ -172,20 +187,17 @@ function loadStateMeta(authCookie) {
 		var obj = [];		
 		jsonfile.writeFileSync(file, obj);	
 		return obj;
-	}
-	
+	}	
 }
 
 
 function saveState(authCookie) {
-    //fs.writeFile("state.json", JSON.stringify(state));	
-    
+    //fs.writeFile("state.json", JSON.stringify(state));	    
 	var obj = [];
 	obj.push({"posts":posts}) ;
 	obj.push({"metadata":meta});
 	var file = './' + authCookie + '.json';	 
-	jsonfile.writeFileSync(file, obj);
-	
+	jsonfile.writeFileSync(file, obj);	
 }
 
 app.listen(3000);
