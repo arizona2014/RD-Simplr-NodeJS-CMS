@@ -166,7 +166,6 @@ app.post('/logon', function(req, res) {
 });
 
 function loadStatePosts(authCookie) {
-    //state = fs.readFile("state.json");	
 	var file = './' + authCookie + '.json'; 
 	if (fs.existsSync(file)) {		
 		var obj = jsonfile.readFileSync(file);						
@@ -191,8 +190,7 @@ function loadStateMeta(authCookie) {
 }
 
 
-function saveState(authCookie) {
-    //fs.writeFile("state.json", JSON.stringify(state));	    
+function saveState(authCookie) {    
 	var obj = [];
 	obj.push({"posts":posts}) ;
 	obj.push({"metadata":meta});
