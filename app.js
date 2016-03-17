@@ -110,12 +110,12 @@ app.get('/editpost/:id', function(req, res) {
 	for(i=0; i<posts.length; i++){
 		if(posts[i].id == id)
 		{
-			console.log("id = " + id + " postul are tot " + posts[i].id);
+			//console.log("id = " + id + " post has also " + posts[i].id);
 			indx = i;
 		}
 		else 
 		{
-			console.log("id = " + id + " postul are " + posts[i].id);
+			//console.log("id = " + id + " post has " + posts[i].id);
 		}
 	}
 	
@@ -124,6 +124,34 @@ app.get('/editpost/:id', function(req, res) {
 		res.render('editpost.hbs', { username: authCookie, title:posts[indx].title, content: posts[indx].content, meta: meta[indx].meta });
 	else
 		 res.redirect('/posts');
+});
+
+
+app.post('/editpost/:id', function(req, res) {
+    var authCookie = req.cookies.authentication;
+	var id = req.params.id;
+
+	if( !id || id<0 ){		
+		res.redirect('/posts');	
+	}
+
+    var thePost = { 
+			id: id,
+			title: req.body.title, 
+			content: req.body.content 
+        };    
+    
+    var theMeta = { 
+			id: id,
+			meta: req.body.meta
+       };    	
+	
+    posts.push(thePost);
+	meta.push(theMeta);
+	saveState(authCookie);
+	
+    res.cookie("authentication", authCookie);
+    res.redirect('/posts');	
 });
 
 app.get('/deletepost/:id', function(req, res) {    
