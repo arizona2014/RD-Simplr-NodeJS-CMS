@@ -97,8 +97,29 @@ app.get('/viewpost/:id', function(req, res) {
 	}	
 
     res.cookie("authentication", authCookie);	
-	if( indx !== -1 )
-		res.render('viewpost.hbs', { username: authCookie, content: posts[indx].content });
+	
+	
+	
+	if( indx !== -1 ){
+		
+		// TODO
+		var ctn = posts[indx].content;
+		var pos1 = ctn.indexOf("###hbs_start###") + 15; 
+		var pos2 = ctn.indexOf("###hbs_stop###"); 
+		var dimension = pos2 - pos1;
+		var hbs = ctn.substr(pos1, dimension);
+		var days = JSON.parse(meta[indx].meta);
+		
+		console.log(hbs);
+
+		var data = {
+			username: authCookie, 
+			content: hbs,
+			days: days
+		};
+		
+		res.render('viewpost.hbs', data);
+	}		
 	else
 		 res.redirect('/posts');
 });
