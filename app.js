@@ -15,6 +15,7 @@ app.engine('hbs', expressHbs({ extname:'hbs', defaultLayout:'main.hbs' }));
 app.set('view engine', 'hbs');
 app.use(cookieParser());
 
+
 var posts = [];
 var meta = [];
 
@@ -105,7 +106,7 @@ app.get('/viewpost/:id', function(req, res) {
 app.get('/editpost/:id', function(req, res) {    
     var authCookie = req.cookies.authentication;
 	var id = req.params.id;
-
+	
 	var indx = -1;
 	for(i=0; i<posts.length; i++){
 		if(posts[i].id == id)

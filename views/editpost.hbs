@@ -36,8 +36,17 @@
 		'emoticons template paste textcolor colorpicker textpattern imagetools'
 	  ],
 	  toolbar1: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-	  toolbar2: 'print preview media | forecolor backcolor emoticons',
-	  image_advtab: true,
+	  toolbar2: 'print preview media | forecolor backcolor emoticons, mybutton',
+	  image_advtab: true,	
+	  setup: function (editor) {
+		editor.addButton('mybutton', {
+		  title : 'Handlebars',	  
+		  image: '..//handlebars.png',
+		  onclick: function () {
+			editor.insertContent('&nbsp;<!-- My Handlebar code -->&nbsp;');
+		  }
+		});
+	  },	  
 	  templates: [
 		{ title: 'Test template 1', content: 'Test 1' },
 		{ title: 'Test template 2', content: 'Test 2' }
