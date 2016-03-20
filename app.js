@@ -107,18 +107,37 @@ app.get('/viewpost/:id', function(req, res) {
 		var pos1 = ctn.indexOf("###hbs_start###") + 15; 
 		var pos2 = ctn.indexOf("###hbs_stop###"); 
 		var dimension = pos2 - pos1;
-		var hbs = ctn.substr(pos1, dimension);
-		var days = JSON.parse(meta[indx].meta);
+		var hbs = ctn.substr(pos1, dimension);		
+		var days = ['Luni','Marti','Miercuri'];		
 		
-		console.log(hbs);
+		if(hbs){
+		
+			console.log(hbs);
 
-		var data = {
-			username: authCookie, 
-			content: hbs,
-			days: days
-		};
+			fs.writeFile('./views/viewpostmeta.hbs', hbs, function (err) {
+			  if (err) return console.log(err);	
+
+				var data = {
+					username: authCookie, 
+					days: days
+				};
+				
+				res.render('viewpostmeta.hbs', data);			  
+
+			});			
+									
+			
+		} else {
+			console.log('nu exista hbs');
+			var data = {
+				username: authCookie, 
+				content: posts[indx].content
+			};
+			
+			res.render('viewpost.hbs', data);						
+		}
 		
-		res.render('viewpost.hbs', data);
+
 	}		
 	else
 		 res.redirect('/posts');
