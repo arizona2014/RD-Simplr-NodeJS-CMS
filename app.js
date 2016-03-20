@@ -107,19 +107,19 @@ app.get('/viewpost/:id', function(req, res) {
 		var pos1 = ctn.indexOf("###hbs_start###") + 15; 
 		var pos2 = ctn.indexOf("###hbs_stop###"); 
 		var dimension = pos2 - pos1;
-		var hbs = ctn.substr(pos1, dimension);		
-		var days = ['Luni','Marti','Miercuri'];		
+		var hbs = ctn.substr(pos1, dimension);			
+		var days = meta[indx].meta;		
+		var objdays = JSON.parse(days);
 		
 		if(hbs){
-		
-			console.log(hbs);
+
 
 			fs.writeFile('./views/viewpostmeta.hbs', hbs, function (err) {
 			  if (err) return console.log(err);	
 
 				var data = {
 					username: authCookie, 
-					days: days
+					days: objdays
 				};
 				
 				res.render('viewpostmeta.hbs', data);			  
