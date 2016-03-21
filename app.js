@@ -113,7 +113,6 @@ app.get('/viewpost/:id', function(req, res) {
 		
 		if(hbs){
 
-
 			fs.writeFile('./views/viewpostmeta.hbs', hbs, function (err) {
 			  if (err) return console.log(err);	
 
