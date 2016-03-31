@@ -7,6 +7,7 @@ var jsonfile = require('jsonfile');
 var uuid = require('uuid');
 var fs = require('fs');
 var path = require('path'); 
+var Handlebars = require('handlebars');
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
@@ -96,13 +97,12 @@ app.get('/viewpost/:id', function(req, res) {
 		}
 	}	
 
-    res.cookie("authentication", authCookie);	
-	
-	
+    res.cookie("authentication", authCookie);		
 	
 	if( indx !== -1 ){
 		
 		// TODO
+		/*
 		var ctn = posts[indx].content;
 		var pos1 = ctn.indexOf("###hbs_start###") + 15; 
 		var pos2 = ctn.indexOf("###hbs_stop###"); 
@@ -135,11 +135,29 @@ app.get('/viewpost/:id', function(req, res) {
 			
 			res.render('viewpost.hbs', data);						
 		}
+		*/
 		
+		var source = "<p>Hello, my name is {{name}}. I am from {{hometown}}. I have " +
+			"{{kids.length}} kids:</p>" +
+			"<ul>{{#kids}}<li>{{name}} is {{age}}</li>{{/kids}}</ul>";
+		var template = Handlebars.compile(source);
+
+		var data = { "name": "Alan", "hometown": "Somewhere, TX",
+			"kids": [{"name": "Jimmy", "age": "12"}, {"name": "Sally", "age": "4"}]};
+		var result = template(data);
+		
+		var fs = require('fs');
+			fs.writeFile("./views/test.hbs", result, function(err) {
+			if(err) {
+				return console.log(err);
+			}
+			res.render('test.hbs');
+		});			
 
 	}		
 	else
 		 res.redirect('/posts');
+	 
 });
 
 app.get('/editpost/:id', function(req, res) {    
