@@ -137,14 +137,16 @@ app.get('/viewpost/:id', function(req, res) {
 		}
 		*/
 		
+		var days = meta[indx].meta;		
+		var objdays = JSON.parse(days);		
 		var source = "<p>Hello, my name is {{name}}. I am from {{hometown}}. I have " +
-			"{{kids.length}} kids:</p>" +
-			"<ul>{{#kids}}<li>{{name}} is {{age}}</li>{{/kids}}</ul>";
+			"{{days.length}} days:</p>" +
+			"<ul>{{#days}}<li>{{name}} is {{program}}</li>{{/days}}</ul>";
+			
 		var template = Handlebars.compile(source);
+		//var data = { "name": "Andy", "hometown": "Falticeni",  "days": [{"name": "Luni", "program": "Fongecif"}, {"name": "Marti", "program": "Home"}]};		
 
-		var data = { "name": "Alan", "hometown": "Somewhere, TX",
-			"kids": [{"name": "Jimmy", "age": "12"}, {"name": "Sally", "age": "4"}]};
-		var result = template(data);
+		var result = template(objdays);
 		
 		var fs = require('fs');
 			fs.writeFile("./views/test.hbs", result, function(err) {
