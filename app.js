@@ -99,30 +99,28 @@ app.get('/viewpost/:id', function(req, res) {
 
     res.cookie("authentication", authCookie);		
 	
-	if( indx !== -1 ){
-		
-		// TODO
-		/*
+	if( indx !== -1 ){		
+
 		var ctn = posts[indx].content;
 		var pos1 = ctn.indexOf("###hbs_start###") + 15; 
 		var pos2 = ctn.indexOf("###hbs_stop###"); 
 		var dimension = pos2 - pos1;
 		var hbs = ctn.substr(pos1, dimension);			
+		var days = meta[indx].meta;		
+		var objdays = JSON.parse(days);	
 		
 		if(hbs){
-
-			fs.writeFile('./views/viewpostmeta.hbs', hbs, function (err) {
-			  if (err) return console.log(err);	
-
-				var data = {
-					username: authCookie, 
-					days: objdays
-				};
-				
-				res.render('viewpostmeta.hbs', data);			  
-
-			});			
-									
+		
+			var template = Handlebars.compile(hbs);
+			var result = template(objdays);
+			
+			var fs = require('fs');
+				fs.writeFile("./views/test.hbs", result, function(err) {
+				if(err) {
+					return console.log(err);
+				}
+				res.render('test.hbs');
+			});											
 			
 		} else {
 			console.log('nu exista hbs');
@@ -133,26 +131,6 @@ app.get('/viewpost/:id', function(req, res) {
 			
 			res.render('viewpost.hbs', data);						
 		}
-		*/
-		
-		var days = meta[indx].meta;		
-		var objdays = JSON.parse(days);		
-		var source = "<p>Hello, my name is {{name}}. I am from {{hometown}}. I have " +
-			"{{days.length}} days:</p>" +
-			"<ul>{{#days}}<li>{{name}} is {{program}}</li>{{/days}}</ul>";
-			
-		var template = Handlebars.compile(source);
-		//var data = { "name": "Andy", "hometown": "Falticeni",  "days": [{"name": "Luni", "program": "Fongecif"}, {"name": "Marti", "program": "Home"}]};		
-
-		var result = template(objdays);
-		
-		var fs = require('fs');
-			fs.writeFile("./views/test.hbs", result, function(err) {
-			if(err) {
-				return console.log(err);
-			}
-			res.render('test.hbs');
-		});			
 
 	}		
 	else
