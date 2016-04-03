@@ -115,11 +115,11 @@ app.get('/viewpost/:id', function(req, res) {
 			var result = template(objdays);
 			
 			var fs = require('fs');
-				fs.writeFile("./views/test.hbs", result, function(err) {
+				fs.writeFile("./views/view.hbs", result, function(err) {
 				if(err) {
 					return console.log(err);
 				}
-				res.render('test.hbs');
+				res.render('view.hbs');
 			});											
 			
 		} else {
