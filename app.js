@@ -125,8 +125,7 @@ app.get('/viewpost/:id', function(req, res) {
 				res.render('view.hbs');
 			});											
 			
-		} else {
-			console.log('nu exista hbs');
+		} else {			
 			var data = {
 				username: authCookie, 
 				content: posts[indx].content
@@ -147,14 +146,8 @@ app.get('/editpost/:id', function(req, res) {
 	
 	var indx = -1;
 	for(i=0; i<posts.length; i++){
-		if(posts[i].id == id)
-		{
-			//console.log("id = " + id + " post has also " + posts[i].id);
+		if(posts[i].id == id){
 			indx = i;
-		}
-		else 
-		{
-			//console.log("id = " + id + " post has " + posts[i].id);
 		}
 	}
 	
@@ -174,20 +167,20 @@ app.post('/editpost/:id', function(req, res) {
 		res.redirect('/posts');	
 	}
 
-    var thePost = { 
-			id: id,
-			title: req.body.title, 
-			content: req.body.content 
-        };    
-    
-    var theMeta = { 
-			id: id,
-			meta: req.body.meta
-       };    	
-	
-    posts.push(thePost);
-	meta.push(theMeta);
-	saveState(authCookie);
+	var indx = -1;
+	for(i=0; i<posts.length; i++){
+		if(posts[i].id == id)
+		{
+			posts[i].title = req.body.title;
+			posts[i].content = req.body.content;			
+			meta[i].meta = req.body.meta;			
+			indx = i;
+		}
+	}	
+
+	if(indx > -1) {
+		saveState(authCookie);	
+	}
 	
     res.cookie("authentication", authCookie);
     res.redirect('/posts');	
@@ -198,10 +191,7 @@ app.get('/deletepost/:id', function(req, res) {
 	var id = req.params.id;	
     res.cookie("authentication", authCookie);
 	var indx = -1;
-	
-	console.log(posts);
-	console.log(id);
-	
+		
 	for(i=0; i<posts.length; i++){
 		if(posts[i].id == id)
 		{
@@ -256,10 +246,6 @@ function saveState(authCookie) {
 	var obj = [];
 	obj.push({"posts":posts}) ;
 	obj.push({"metadata":meta});	
-		
-	console.log(posts);	
-	console.log(meta);	
-	
 	var file = './' + authCookie + '.json';	 
 	jsonfile.writeFileSync(file, obj);	
 }
