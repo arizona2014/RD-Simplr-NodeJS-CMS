@@ -31,11 +31,14 @@ app.get('/logon', function(req, res) {
 app.get('/posts', function(req, res) {	
     var authCookie = req.cookies.authentication;     
     if(authCookie && authCookie != "") {        
-		posts = loadStatePosts(authCookie);
-		meta = loadStateMeta(authCookie);
+		data = loadState(authCookie);				
+		posts = data[0]["posts"];
+		meta = data[1]["metadata"];
+		
 		var userPosts = [];
-		if(posts !== [])
+		if(posts !== []){
 			userPosts = posts;		
+		}			
         res.render('posts.hbs', { username: authCookie, posts: userPosts });
     }
     else {
@@ -219,6 +222,10 @@ app.get('/deletepost/:id', function(req, res) {
 	var id = req.params.id;	
     res.cookie("authentication", authCookie);
 	var indx = -1;
+	
+	console.log(posts);
+	console.log(id);
+	
 	for(i=0; i<posts.length; i++){
 		if(posts[i].id == id)
 		{
@@ -229,9 +236,10 @@ app.get('/deletepost/:id', function(req, res) {
 	if(indx > -1)
 	{
 		posts.splice(indx,1);
+		meta.splice(indx,1);
 	}
 	
-	saveState(posts, authCookie);		
+	saveState(authCookie);		
     res.redirect('/posts');	
 });
 
@@ -253,35 +261,29 @@ app.post('/logon', function(req, res) {
     } 
 });
 
-function loadStatePosts(authCookie) {
+function loadState(authCookie) {
 	var file = './' + authCookie + '.json'; 
+	
 	if (fs.existsSync(file)) {		
 		var obj = jsonfile.readFileSync(file);						
-		return obj[0]["posts"];		
-	} else {
+		return obj;		
+	} else {	
 		var obj = [];		
+		obj.push({"posts":posts}) ;
+		obj.push({"metadata":meta});	
 		jsonfile.writeFileSync(file, obj);	
 		return obj;
 	}	
 }
-
-function loadStateMeta(authCookie) {    	
-	var file = './' + authCookie + '.json'; 
-	if (fs.existsSync(file)) {
-		var obj = jsonfile.readFileSync(file);		
-		return obj[1]["metadata"];	
-	} else {
-		var obj = [];		
-		jsonfile.writeFileSync(file, obj);	
-		return obj;
-	}	
-}
-
 
 function saveState(authCookie) {    
 	var obj = [];
 	obj.push({"posts":posts}) ;
-	obj.push({"metadata":meta});
+	obj.push({"metadata":meta});	
+		
+	console.log(posts);	
+	console.log(meta);	
+	
 	var file = './' + authCookie + '.json';	 
 	jsonfile.writeFileSync(file, obj);	
 }
