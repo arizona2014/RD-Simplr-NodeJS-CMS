@@ -1,3 +1,4 @@
+// Here are the dependencies
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
@@ -17,17 +18,21 @@ app.set('view engine', 'hbs');
 app.use(cookieParser());
 
 
+// The two main variables posts & meta are declared here
 var posts = [];
 var meta = [];
 
+// This is the entry point of app
 app.get('/', function(req, res) {
     res.render('index.hbs');
 });
 
+// This is the logon route
 app.get('/logon', function(req, res) {
     res.render('logon.hbs', { error: '' });
 });
 
+// Below is the function for the display of POSTS page
 app.get('/posts', function(req, res) {	
     var authCookie = req.cookies.authentication;     
     if(authCookie && authCookie != "") {        
@@ -46,6 +51,7 @@ app.get('/posts', function(req, res) {
     }
 });
 
+// Below is the function for the display of a new POST
 app.get('/newpost', function(req, res) {    
     var authCookie = req.cookies.authentication;	
     res.cookie("authentication", authCookie);
