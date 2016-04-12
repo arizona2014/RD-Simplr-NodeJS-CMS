@@ -117,15 +117,30 @@ app.get('/viewpost/:id', function(req, res) {
 			var template = Handlebars.compile(hbs);
 			var result = template(objdays);
 			
+			/*
 			var fs = require('fs');
-				fs.writeFile("./views/view.hbs", result, function(err) {
+			fs.writeFile("./views/view_" + authCookie + ".hbs", result, function(err) {
 				if(err) {
 					return console.log(err);
 				}
-				res.render('view.hbs');
+				res.render("view_" + authCookie + ".hbs");
 			});											
+			*/
+			
+			var endOfCnt = ctn.length;
+			var tmpl = ctn.slice(pos1-20,pos2+18);
+			var newContent = ctn.slice(0,pos1-20) + result + ctn.slice(pos2+18,endOfCnt);
+			console.log(newContent);			
+			
+			var data = {
+				username: authCookie, 
+				content: newContent
+			};
+			
+			res.render('viewpost.hbs', data);									
 			
 		} else {			
+		
 			var data = {
 				username: authCookie, 
 				content: posts[indx].content
