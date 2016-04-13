@@ -163,6 +163,7 @@ app.get('/viewpost/:id', function(req, res) {
 	 
 });
 
+// The function for editing a POST
 app.get('/editpost/:id', function(req, res) {    
     var authCookie = req.cookies.authentication;
 	var id = req.params.id;
