@@ -125,16 +125,6 @@ app.get('/viewpost/:id', function(req, res) {
 			var template = Handlebars.compile(hbs);
 			var result = template(objdays);
 			
-			/*
-			var fs = require('fs');
-			fs.writeFile("./views/view_" + authCookie + ".hbs", result, function(err) {
-				if(err) {
-					return console.log(err);
-				}
-				res.render("view_" + authCookie + ".hbs");
-			});											
-			*/
-			
 			var endOfCnt = ctn.length;
 			var tmpl = ctn.slice(pos1-20,pos2+18);
 			var newContent = ctn.slice(0,pos1-20) + result + ctn.slice(pos2+18,endOfCnt);
