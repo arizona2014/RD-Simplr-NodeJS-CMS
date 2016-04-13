@@ -32,7 +32,7 @@ app.get('/logon', function(req, res) {
     res.render('logon.hbs', { error: '' });
 });
 
-// Below is the function for the display of POSTS page
+// The function for displaying users's POSTS
 app.get('/posts', function(req, res) {	
     var authCookie = req.cookies.authentication;     
     if(authCookie && authCookie != "") {        
@@ -51,13 +51,14 @@ app.get('/posts', function(req, res) {
     }
 });
 
-// Below is the function for the display of a new POST
+// The function for displaying the form of a new POST
 app.get('/newpost', function(req, res) {    
     var authCookie = req.cookies.authentication;	
     res.cookie("authentication", authCookie);
     res.render('newpost.hbs', { username: authCookie });
 });
 
+// The function for posting the infos from the form a new POST
 app.post('/newpost', function(req, res) {
 	var authCookie = req.cookies.authentication;
 	var id;
@@ -94,6 +95,7 @@ app.post('/newpost', function(req, res) {
     res.redirect('/posts');	
 });
 
+// The function for posting the infos from the form a new POST
 app.get('/viewpost/:id', function(req, res) {    
     var authCookie = req.cookies.authentication;
 	var id = req.params.id;
