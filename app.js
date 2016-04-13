@@ -172,7 +172,7 @@ app.get('/editpost/:id', function(req, res) {
 		 res.redirect('/posts');
 });
 
-
+// The function for submitting the modified POST page
 app.post('/editpost/:id', function(req, res) {
     var authCookie = req.cookies.authentication;
 	var id = req.params.id;
