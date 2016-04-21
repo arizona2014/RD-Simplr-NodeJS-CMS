@@ -200,6 +200,7 @@ app.post('/editpost/:id', function(req, res) {
     res.redirect('/posts');	
 });
 
+// The delete POST function
 app.get('/deletepost/:id', function(req, res) {    
     var authCookie = req.cookies.authentication;
 	var id = req.params.id;	
@@ -223,10 +224,12 @@ app.get('/deletepost/:id', function(req, res) {
     res.redirect('/posts');	
 });
 
+// Signup function
 app.get('/signup', function(req, res) {     
     res.render('signup.hbs');
 });
 
+// Logout function
 app.get('/logout', function(req, res) {    
     res.cookie('authentication', ""); 
     res.render('logout.hbs');
