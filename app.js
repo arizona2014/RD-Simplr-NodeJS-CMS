@@ -10,8 +10,10 @@ var fs = require('fs');
 var path = require('path'); 
 var Handlebars = require('handlebars');
 
-app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+// for parsing application/json
+app.use(bodyParser.json()); 
+// for parsing application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('content'));
 app.engine('hbs', expressHbs({ extname:'hbs', defaultLayout:'main.hbs' }));
 app.set('view engine', 'hbs');
