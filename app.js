@@ -235,6 +235,7 @@ app.get('/logout', function(req, res) {
     res.render('logout.hbs');
 });
 
+// Login function
 app.post('/logon', function(req, res) {    
     if (req.body.email == req.body.password) {            
         res.cookie('authentication', req.body.email);                      
@@ -244,6 +245,7 @@ app.post('/logon', function(req, res) {
     } 
 });
 
+// The function responsible for loading the datas from JSON file
 function loadState(authCookie) {
 	var file = './' + authCookie + '.json'; 
 	
@@ -259,6 +261,7 @@ function loadState(authCookie) {
 	}	
 }
 
+// The function responsible for saving the datas from JSON file
 function saveState(authCookie) {    
 	var obj = [];
 	obj.push({"posts":posts}) ;
