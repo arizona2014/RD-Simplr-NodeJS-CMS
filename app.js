@@ -10,7 +10,7 @@ var fs = require('fs');
 var path = require('path'); 
 var Handlebars = require('handlebars');
 
-// for parsing application/json dssdfs
+// for parsing application/json 
 app.use(bodyParser.json()); 
 // for parsing application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
