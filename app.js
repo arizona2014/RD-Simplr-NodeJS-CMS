@@ -273,4 +273,5 @@ function saveState(authCookie) {
 	jsonfile.writeFileSync(file, obj);	
 }
 
+// run the app on the 3000 port
 app.listen(3000);
